@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Mar 13 06:29:52 2025
+
+@author: sako
+"""
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Mar 13 05:39:06 2025
+
+@author: sako
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+df = pd.read_csv("results.csv")
+
+
+
+prof = ['ML engineer','Data Scientist', 'Data Analyst', 'Data Engineer']
+colors = ['yellow','blue','red','green']
+df_prof = df[prof].to_numpy().T.tolist()
+
+
+people = list(set(df.columns.tolist()) - set(prof).union({"Categories"}))
+df_people = df[people].to_numpy().T.tolist()
+
+
+# Categories (Axes)
+categories = df.Categories
+
+N = len(categories)
+angles = np.linspace(0, 2 * np.pi, N, endpoint=False).tolist()
+angles.append(angles[0])  # Closing the loop
+
+# Create the radar chart
+fig, axes = plt.subplots(2,2,figsize=(15, 15), subplot_kw=dict(polar=True))
+
+
+for ax, values, title in zip(axes.flatten(), df_people, people):
+
+    
+    # Ensure values wrap around to close the radar chart
+    values.append(values[0])  # Closing the loop
+
+
+    # Plot data
+    ax.fill(angles, values, color='blue', alpha=0.25)
+    ax.plot(angles, values, color='blue', linewidth=2)
+    
+
+    # Set labels
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(categories, fontsize=10)
+    
+    # Show plot
+    ax.set_title(title,fontsize=20)
+
+
+
+plt.tight_layout()    
+plt.show()
+
+
+
+# Create the radar chart
+fig, axes = plt.subplots(2,2,figsize=(15, 15), subplot_kw=dict(polar=True))
+
+for ax, values, title,col in zip(axes.flatten(), 
+                             df_prof, 
+                             prof,
+                             colors):
+
+    
+    # Ensure values wrap around to close the radar chart
+    values.append(values[0])  # Closing the loop
+
+
+    # Plot data
+    ax.fill(angles, values, color=col, alpha=0.25)
+    ax.plot(angles, values, color=col, linewidth=2)
+    
+    # Set labels
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(categories, fontsize=10)
+    
+    # Show plot
+    ax.set_title(title,fontsize=20)
+plt.tight_layout()    
+plt.show()
+
+
